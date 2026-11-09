@@ -1,15 +1,15 @@
-// PHANTOM CHESS — Welcome Screen
-
 const skipCheckbox = document.getElementById("skipWelcome");
 
-// Load the saved preference
-const savedPreference = localStorage.getItem("skipWelcome");
-
-if (savedPreference === "true") {
-    skipCheckbox.checked = true;
-}
-
-// Save whenever the checkbox changes
 skipCheckbox.addEventListener("change", function () {
+    alert("Checkbox detected: " + skipCheckbox.checked);
+
     localStorage.setItem("skipWelcome", skipCheckbox.checked);
+});
+
+window.addEventListener("load", function () {
+    const saved = localStorage.getItem("skipWelcome");
+
+    alert("Saved preference: " + saved);
+
+    skipCheckbox.checked = saved === "true";
 });
