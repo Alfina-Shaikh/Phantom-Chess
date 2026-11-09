@@ -7,19 +7,72 @@
 }
 
 body {
-    background-color: #0b0612;
+    background: radial-gradient(circle, #241039, #0b0612 75%);
     color: #f0d9ff;
     font-family: Georgia, serif;
     min-height: 100vh;
+}
+
+.welcome-screen {
+    min-height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    text-align: center;
+    padding: 25px;
 }
 
 h1 {
-    font-size: 42px;
+    font-size: clamp(32px, 7vw, 58px);
     letter-spacing: 8px;
-    color: #d9a7ff;
+    color: #e3bdff;
     text-shadow: 0 0 15px #9b4dff;
-    text-align: center;
+    margin-bottom: 18px;
+}
+
+.tagline {
+    font-size: 18px;
+    letter-spacing: 2px;
+    color: #c7a4df;
+    margin-bottom: 45px;
+}
+
+.welcome-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: min(280px, 90%);
+}
+
+button {
+    padding: 15px;
+    border: 1px solid #bd82ef;
+    border-radius: 10px;
+    background: #512477;
+    color: white;
+    font-family: Georgia, serif;
+    font-size: 17px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #7540a0;
+    box-shadow: 0 0 15px #9b4dff;
+}
+
+#howToPlayButton {
+    background: transparent;
+}
+
+.skip-option {
+    margin-top: 30px;
+    color: #bda5ce;
+    font-size: 14px;
+}
+
+.skip-option input {
+    accent-color: #a45be0;
+    margin-right: 7px;
 }
