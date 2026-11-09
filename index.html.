@@ -9,7 +9,24 @@
 
 <body>
 
-    <h1>PHANTOM CHESS</h1>
+    <main class="welcome-screen">
 
+        <h1>PHANTOM CHESS</h1>
+
+        <p class="tagline">Every piece has a secret</p>
+
+        <div class="welcome-buttons">
+            <button id="homeButton">Home screen</button>
+            <button id="howToPlayButton">How to Play</button>
+        </div>
+
+        <label class="skip-option">
+            <input type="checkbox" id="skipWelcome">
+            Skip welcome screen
+        </label>
+
+    </main>
+
+    <script src="script.js"></script>
 </body>
 </html>
