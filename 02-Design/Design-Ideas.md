@@ -78,7 +78,80 @@ The initial navigation structure is:
 
 The Main Home Screen and How to Play Menu are separate destinations.
 
-6. Design Development
+6. Main Home Screen
+
+The Main Home Screen is the primary navigation dashboard of Phantom Chess.
+
+6.1 Layout
+
+The proposed layout contains:
+
+- Game logo in the top-left corner.
+- Profile access in the top-right corner.
+- Game name displayed below the top section.
+- Six main navigation buttons arranged in two columns.
+
+6.2 Profile
+
+Opens the player's profile, including their name and profile-related settings.
+
+6.3 Play
+
+Opens a submenu containing:
+
+- Play with Bot.
+- Play with Friend.
+- Random Player (planned for a future multiplayer update).
+
+6.4 History
+
+Displays previous matches, including their progression from beginning to end.
+
+Future functionality may include reviewing private notes associated with previous matches.
+
+6.5 Formation
+
+Opens a formation management screen containing three formation slots.
+
+- All three slots are empty initially.
+- Players can add formations to empty slots.
+- Existing formations can be edited.
+- Players can delete saved formations.
+- Each slot stores a player's custom formation.
+
+6.6 Preferences
+
+Provides customization options, including:
+
+- Game themes.
+- Colour schemes.
+- Hidden identity visuals.
+
+Additional customization options may be introduced in future updates.
+
+6.7 How to Play
+
+Opens the previously defined How to Play menu, containing:
+
+- Rule Book.
+- Interactive Chess Game.
+
+6.8 Credits & Contact
+
+Provides information about the project, including:
+
+- About Phantom Chess.
+- Developer credits.
+- Open-source libraries and asset acknowledgements.
+- Contact information.
+- Potential feedback and problem-reporting options.
+
+6.9 Design History
+
+Version| Description
+0.3| Main Home Screen structure and navigation documented
+
+7. Design Development
 
 The following screens will be designed and documented:
 
@@ -93,7 +166,7 @@ The following screens will be designed and documented:
 - Private Player Notebook
 - Match Results
 
-7. Design History
+8. Design History
 
 Version| Description
 0.1| Initial design direction
@@ -102,3 +175,4 @@ Version| Description
 ---
 
 Note: This document records the initial design decisions. Layouts, illustrations, and visual details will be refined during future design stages.
+
