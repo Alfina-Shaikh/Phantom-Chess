@@ -1,0 +1,25 @@
+/* PHANTOM CHESS — Main Styles */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #0b0612;
+    color: #f0d9ff;
+    font-family: Georgia, serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    font-size: 42px;
+    letter-spacing: 8px;
+    color: #d9a7ff;
+    text-shadow: 0 0 15px #9b4dff;
+    text-align: center;
+}
