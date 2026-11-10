@@ -16,7 +16,7 @@ body {
 .welcome-screen {
     min-height: 100vh;
 
-    background-image: url("./1794291622442.jpg");
+    background-image: url("/Phantom-Chess/1794291622442.jpg");
 background-position: center;
 background-size: cover;
 background-repeat: no-repeat;
