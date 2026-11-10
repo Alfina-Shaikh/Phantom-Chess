@@ -9,6 +9,14 @@
     <script type="module"
     src="https://unpkg.com/chessboard-element?module">
     </script>
+    <script type="module">
+    import { Chess } from
+    "https://cdnjs.cloudflare.com/ajax/libs/chess.js/1.0.0/chess.js";
+
+    const game = new Chess();
+
+    console.log(game.fen());
+    </script>
 
     <style>
         .board-container {
@@ -37,7 +45,11 @@
         <p class="tagline">Every piece has a secret</p>
 
         <div class="board-container">
-            <chess-board position="start"></chess-board>
+            <chess-board
+    id="chessboard"
+    position="start"
+    draggable-pieces>
+</chess-board>
         </div>
 
         <button onclick="window.location.href='bot.html'">
