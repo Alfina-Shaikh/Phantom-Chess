@@ -60,38 +60,44 @@ function clearLegalMoves() {
     }
 
     board.addEventListener("drag-start", (event) => {
-        const piece = event.detail.piece;
+    const piece = event.detail.piece;
 
-        if (
-            game.isGameOver() ||
-            (game.turn() === "w" && piece.startsWith("b")) ||
-            (game.turn() === "b" && piece.startsWith("w"))
-        ) {
-            event.preventDefault();
-        }
-    });
+    if (
+        game.isGameOver() ||
+        (game.turn() === "w" && piece.startsWith("b")) ||
+        (game.turn() === "b" && piece.startsWith("w"))
+    ) {
+        event.preventDefault();
+        return;
+    }
 
-    board.addEventListener("drop", (event) => {
-        const { source, target, setAction } = event.detail;
+    showLegalMoves(event.detail.source);
+});
 
-        try {
-            game.move({
-                from: source,
-                to: target,
-                promotion: "q"
-            });
+board.addEventListener("drop", (event) => {
+    const { source, target, setAction } = event.detail;
 
-            updateStatus();
-        } catch (error) {
-            setAction("snapback");
-        }
-    });
+    clearLegalMoves();
 
-    board.addEventListener("snap-end", () => {
-        board.setPosition(game.fen());
-    });
+    try {
+        game.move({
+            from: source,
+            to: target,
+            promotion: "q"
+        });
 
-    updateStatus();
+        updateStatus();
+    } catch (error) {
+        setAction("snapback");
+    }
+});
+
+board.addEventListener("snap-end", () => {
+    board.setPosition(game.fen());
+    clearLegalMoves();
+});
+
+updateStatus();
     </script>
     <style>
         .board-container {
