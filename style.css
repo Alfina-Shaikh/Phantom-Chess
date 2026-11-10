@@ -16,9 +16,10 @@ body {
 .welcome-screen {
     min-height: 100vh;
 
-    background:
-        linear-gradient(rgba(10, 4, 18, 0.35), rgba(10, 4, 18, 0.55)),
-        url("1794291622442.jpg") center / cover no-repeat;
+    background-image: url("./1794291622442.jpg");
+background-position: center;
+background-size: cover;
+background-repeat: no-repeat;
 
     display: flex;
     flex-direction: column;
