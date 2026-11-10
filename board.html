@@ -76,6 +76,79 @@ function showLegalMoves(square) {
 function clearLegalMoves() {
     highlightStyles.textContent = "";
 }
+        function showPromotionChoices() {
+    const popup = document.createElement("div");
+
+    popup.style.cssText = `
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.75);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    `;
+
+    const panel = document.createElement("div");
+
+    panel.style.cssText = `
+        background: #24202b;
+        padding: 25px;
+        border-radius: 16px;
+        text-align: center;
+        color: white;
+        width: 85%;
+        max-width: 320px;
+    `;
+
+    panel.innerHTML = `
+        <h2>Choose your piece</h2>
+        <p>Your pawn has reached the final rank!</p>
+        <div style="
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        ">
+            <button data-piece="q">♕ Queen</button>
+            <button data-piece="r">♖ Rook</button>
+            <button data-piece="b">♗ Bishop</button>
+            <button data-piece="n">♘ Knight</button>
+        </div>
+    `;
+
+    popup.appendChild(panel);
+    document.body.appendChild(popup);
+
+    panel.querySelectorAll("button").forEach(button => {
+        button.style.cssText = `
+            padding: 14px 8px;
+            border: 1px solid #d6ad55;
+            border-radius: 10px;
+            background: #39313f;
+            color: white;
+            font-size: 16px;
+        `;
+
+        button.addEventListener("click", () => {
+            const pending = window.pendingPromotion;
+
+            if (!pending) return;
+
+            game.move({
+                from: pending.from,
+                to: pending.to,
+                promotion: button.dataset.piece
+            });
+
+            window.pendingPromotion = null;
+            popup.remove();
+
+            board.setPosition(game.fen());
+            clearLegalMoves();
+            updateStatus();
+        });
+    });
+        }
 
     function updateStatus() {
         if (game.isCheckmate()) {
@@ -120,13 +193,31 @@ board.addEventListener("drop", (event) => {
     clearLegalMoves();
 
     try {
-        game.move({
-            from: source,
-            to: target,
-            promotion: "q"
-        });
+        const movingPiece = game.get(source);
 
-        updateStatus();
+if (
+    movingPiece &&
+    movingPiece.type === "p" &&
+    (target[1] === "8" || target[1] === "1")
+) {
+    setAction("snapback");
+
+    window.pendingPromotion = {
+        from: source,
+        to: target
+    };
+
+    showPromotionChoices();
+    return;
+}
+
+game.move({
+    from: source,
+    to: target
+});
+
+updateStatus();
+        
     } catch (error) {
         setAction("snapback");
     }
