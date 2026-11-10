@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phantom Chess — Board</title>
+    <link rel="stylesheet" href="style.css">
+
+    <script type="module"
+    src="https://unpkg.com/chessboard-element?module">
+    </script>
+
+    <style>
+        .board-container {
+            width: min(92vw, 500px);
+            margin: 25px auto;
+        }
+
+        chess-board {
+            display: block;
+            width: 100%;
+        }
+
+        .board-screen {
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="board-screen">
+
+        <h1>PHANTOM CHESS</h1>
+
+        <p class="tagline">Every piece has a secret</p>
+
+        <div class="board-container">
+            <chess-board position="start"></chess-board>
+        </div>
+
+        <button onclick="window.location.href='bot.html'">
+            Back to Bot Setup
+        </button>
+
+    </main>
+
+</body>
+</html>
