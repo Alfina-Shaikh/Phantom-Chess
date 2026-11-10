@@ -6,10 +6,14 @@ const skipCheckbox = document.getElementById("skipWelcome");
 const savedPreference = localStorage.getItem("skipWelcome");
 
 // If skipping is enabled, open the Home Screen
-if (savedPreference === "true") {
+if (
+    savedPreference === "true" &&
+    sessionStorage.getItem("showWelcome") !== "true"
+) {
     window.location.href = "home.html";
 }
 
+sessionStorage.removeItem("showWelcome");
 // Save the visitor's choice
 skipCheckbox.addEventListener("change", function () {
     localStorage.setItem("skipWelcome", skipCheckbox.checked);
