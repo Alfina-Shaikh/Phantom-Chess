@@ -18,6 +18,33 @@
     const status = document.querySelector("#gameStatus");
         const highlightStyles = document.createElement("style");
 document.head.append(highlightStyles);
+        const checkStyles = document.createElement("style");
+document.head.append(checkStyles);
+
+function updateCheckGlow() {
+    checkStyles.textContent = "";
+
+    if (!game.isCheck()) return;
+
+    const king = game.board()
+        .flat()
+        .find(piece =>
+            piece &&
+            piece.type === "k" &&
+            piece.color === game.turn()
+        );
+
+    if (!king) return;
+
+    checkStyles.textContent = `
+        chess-board::part(${king.square}) {
+            box-shadow:
+                inset 0 0 0 4px rgba(255, 65, 65, 1),
+                inset 0 0 18px rgba(255, 45, 45, 0.8),
+                0 0 8px rgba(255, 45, 45, 0.45);
+        }
+    `;
+}
 
 function showLegalMoves(square) {
     const moves = game.moves({
@@ -87,6 +114,7 @@ board.addEventListener("drop", (event) => {
         });
 
         updateStatus();
+        updateCheckGlow();
     } catch (error) {
         setAction("snapback");
     }
