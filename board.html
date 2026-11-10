@@ -15,8 +15,29 @@
 
     const game = new Chess();
     const board = document.querySelector("#chessboard");
+    const status = document.querySelector("#gameStatus");
 
-    // Only allow the player whose turn it is
+    function updateStatus() {
+        if (game.isCheckmate()) {
+            status.textContent =
+                "Checkmate! " +
+                (game.turn() === "w" ? "Black" : "White") +
+                " wins!";
+        } else if (game.isStalemate()) {
+            status.textContent = "Draw — stalemate!";
+        } else if (game.isDraw()) {
+            status.textContent = "Draw!";
+        } else if (game.isCheck()) {
+            status.textContent =
+                (game.turn() === "w" ? "White" : "Black") +
+                " is in check!";
+        } else {
+            status.textContent =
+                (game.turn() === "w" ? "White" : "Black") +
+                " to move";
+        }
+    }
+
     board.addEventListener("drag-start", (event) => {
         const piece = event.detail.piece;
 
@@ -29,7 +50,6 @@
         }
     });
 
-    // Check whether the move is legal
     board.addEventListener("drop", (event) => {
         const { source, target, setAction } = event.detail;
 
@@ -39,15 +59,18 @@
                 to: target,
                 promotion: "q"
             });
+
+            updateStatus();
         } catch (error) {
             setAction("snapback");
         }
     });
 
-    // Update the board after a move
     board.addEventListener("snap-end", () => {
         board.setPosition(game.fen());
     });
+
+    updateStatus();
     </script>
     <style>
         .board-container {
