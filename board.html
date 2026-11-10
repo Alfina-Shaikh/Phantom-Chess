@@ -26,18 +26,30 @@ function updateCheckGlow() {
 
     if (!game.isCheck()) return;
 
-    const king = game.board()
-        .flat()
-        .find(piece =>
-            piece &&
-            piece.type === "k" &&
-            piece.color === game.turn()
-        );
+    const position = game.board();
+    let kingSquare = null;
 
-    if (!king) return;
+    for (let row = 0; row < 8; row++) {
+        for (let col = 0; col < 8; col++) {
+            const piece = position[row][col];
+
+            if (
+                piece &&
+                piece.type === "k" &&
+                piece.color === game.turn()
+            ) {
+                kingSquare = "abcdefgh"[col] + (8 - row);
+                break;
+            }
+        }
+
+        if (kingSquare) break;
+    }
+
+    if (!kingSquare) return;
 
     checkStyles.textContent = `
-        chess-board::part(${king.square}) {
+        chess-board::part(${kingSquare}) {
             box-shadow:
                 inset 0 0 0 4px rgba(255, 65, 65, 1),
                 inset 0 0 18px rgba(255, 45, 45, 0.8),
@@ -84,6 +96,7 @@ function clearLegalMoves() {
                 (game.turn() === "w" ? "White" : "Black") +
                 " to move";
         }
+        updateCheckGlow();
     }
 
     board.addEventListener("drag-start", (event) => {
@@ -114,7 +127,6 @@ board.addEventListener("drop", (event) => {
         });
 
         updateStatus();
-        updateCheckGlow();
     } catch (error) {
         setAction("snapback");
     }
