@@ -2,14 +2,15 @@
 
 const skipCheckbox = document.getElementById("skipWelcome");
 
-// Load the saved preference
+// Check whether the visitor previously chose to skip
 const savedPreference = localStorage.getItem("skipWelcome");
 
+// If skipping is enabled, open the Home Screen
 if (savedPreference === "true") {
-    skipCheckbox.checked = true;
+    window.location.href = "home.html";
 }
 
-// Save whenever the checkbox changes
+// Save the visitor's choice
 skipCheckbox.addEventListener("change", function () {
     localStorage.setItem("skipWelcome", skipCheckbox.checked);
 });
