@@ -11,13 +11,44 @@
     </script>
     <script type="module">
     import { Chess } from
-    "https://cdnjs.cloudflare.com/ajax/libs/chess.js/1.0.0/chess.js";
+    "https://cdn.jsdelivr.net/npm/chess.js@1.4.0/+esm";
 
     const game = new Chess();
+    const board = document.querySelector("#chessboard");
 
-    console.log(game.fen());
+    // Only allow the player whose turn it is
+    board.addEventListener("drag-start", (event) => {
+        const piece = event.detail.piece;
+
+        if (
+            game.isGameOver() ||
+            (game.turn() === "w" && piece.startsWith("b")) ||
+            (game.turn() === "b" && piece.startsWith("w"))
+        ) {
+            event.preventDefault();
+        }
+    });
+
+    // Check whether the move is legal
+    board.addEventListener("drop", (event) => {
+        const { source, target, setAction } = event.detail;
+
+        try {
+            game.move({
+                from: source,
+                to: target,
+                promotion: "q"
+            });
+        } catch (error) {
+            setAction("snapback");
+        }
+    });
+
+    // Update the board after a move
+    board.addEventListener("snap-end", () => {
+        board.setPosition(game.fen());
+    });
     </script>
-
     <style>
         .board-container {
             width: min(92vw, 500px);
