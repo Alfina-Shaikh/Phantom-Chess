@@ -1,99 +1,25 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Phantom Chess — Board</title>
-
     <link rel="stylesheet" href="style.css">
 
     <script type="module"
-        src="https://unpkg.com/chessboard-element?module">
+    src="https://unpkg.com/chessboard-element?module">
     </script>
+    <script type="module">
+    import { Chess } from
+    "https://cdn.jsdelivr.net/npm/chess.js@1.4.0/+esm";
 
-    <style>
-        .board-container {
-            width: min(92vw, 500px);
-            margin: 25px auto;
-        }
-
-        chess-board {
-            display: block;
-            width: 100%;
-        }
-
-        .board-screen {
-            text-align: center;
-            padding: 20px;
-        }
-    </style>
-</head>
-
-<body>
-
-<main class="board-screen">
-
-    <h1>PHANTOM CHESS</h1>
-
-    <p class="tagline">Every piece has a secret</p>
-
-    <p id="gameStatus">White to move</p>
-
-    <div class="board-container">
-        <chess-board
-            id="chessboard"
-            position="start"
-            draggable-pieces>
-        </chess-board>
-    </div>
-
-    <button onclick="window.location.href='bot.html'">
-        Back to Bot Setup
-    </button>
-
-</main>
-
-<script type="module">
-
-import { Chess } from
-"https://cdn.jsdelivr.net/npm/chess.js@1.4.0/+esm";
-
-const game = new Chess();
-
-const board = document.querySelector("#chessboard");
-const status = document.querySelector("#gameStatus");
-
-const highlightStyles = document.createElement("style");
+    const game = new Chess();
+    const board = document.querySelector("#chessboard");
+    const status = document.querySelector("#gameStatus");
+        const highlightStyles = document.createElement("style");
 document.head.append(highlightStyles);
-
-const checkStyles = document.createElement("style");
+        const checkStyles = document.createElement("style");
 document.head.append(checkStyles);
-
-
-// LEGAL MOVE HIGHLIGHTING
-
-function showLegalMoves(square) {
-    const moves = game.moves({
-        square: square,
-        verbose: true
-    });
-
-    highlightStyles.textContent = moves.map(move => `
-        chess-board::part(${move.to}) {
-            box-shadow:
-                inset 0 0 0 3px rgba(255, 196, 65, 0.85),
-                inset 0 0 12px rgba(255, 190, 45, 0.45);
-        }
-    `).join("\n");
-}
-
-function clearLegalMoves() {
-    highlightStyles.textContent = "";
-}
-
-
-// KING CHECK HIGHLIGHTING
 
 function updateCheckGlow() {
     checkStyles.textContent = "";
@@ -132,130 +58,87 @@ function updateCheckGlow() {
     `;
 }
 
+function showLegalMoves(square) {
+    const moves = game.moves({
+        square: square,
+        verbose: true
+    });
 
-// PROMOTION POPUP
+    highlightStyles.textContent = moves.map(move => `
+        chess-board::part(${move.to}) {
+            box-shadow:
+                inset 0 0 0 3px rgba(255, 196, 65, 0.85),
+                inset 0 0 12px rgba(255, 190, 45, 0.45);
+        }
+    `).join("\n");
+}
 
-function showPromotionChoices() {
-
+function clearLegalMoves() {
+    highlightStyles.textContent = "";
+}
+        function showPromotionChoices() {
     const popup = document.createElement("div");
 
     popup.style.cssText = `
         position: fixed;
         inset: 0;
+        background: rgba(0, 0, 0, 0.75);
         display: flex;
         justify-content: center;
         align-items: center;
         z-index: 9999;
-        pointer-events: none;
     `;
 
     const panel = document.createElement("div");
 
     panel.style.cssText = `
-        position: relative;
-        background: #ffffff;
-        padding: 24px 18px;
-        border: 2px solid #d9dce2;
-        border-radius: 22px;
+        background: #24202b;
+        padding: 25px;
+        border-radius: 16px;
         text-align: center;
-        color: #596574;
-        width: 88%;
-        max-width: 430px;
-        box-shadow: 0 5px 18px rgba(0,0,0,0.16);
-        pointer-events: auto;
-    `;
-
-    const pointer = document.createElement("div");
-
-    pointer.style.cssText = `
-        position: absolute;
-        top: -12px;
-        left: 50%;
-        width: 20px;
-        height: 20px;
-        background: white;
-        border-left: 2px solid #d9dce2;
-        border-top: 2px solid #d9dce2;
-        transform: translateX(-50%) rotate(45deg);
+        color: white;
+        width: 85%;
+        max-width: 320px;
     `;
 
     panel.innerHTML = `
-        <h2 style="
-            font-size: 21px;
-            letter-spacing: 2px;
-            margin: 4px 0 22px;
-            color: #84909d;
-        ">PAWN PROMOTION</h2>
-
+        <h2>Choose your piece</h2>
+        <p>Your pawn has reached the final rank!</p>
         <div style="
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
         ">
-            <button data-piece="q">
-                <span>♕</span>
-                <small>Queen</small>
-            </button>
-
-            <button data-piece="r">
-                <span>♖</span>
-                <small>Rook</small>
-            </button>
-
-            <button data-piece="b">
-                <span>♗</span>
-                <small>Bishop</small>
-            </button>
-
-            <button data-piece="n">
-                <span>♘</span>
-                <small>Knight</small>
-            </button>
+            <button data-piece="q">♕ Queen</button>
+            <button data-piece="r">♖ Rook</button>
+            <button data-piece="b">♗ Bishop</button>
+            <button data-piece="n">♘ Knight</button>
         </div>
     `;
 
-    panel.prepend(pointer);
     popup.appendChild(panel);
     document.body.appendChild(popup);
 
     panel.querySelectorAll("button").forEach(button => {
-
         button.style.cssText = `
-            border: none;
-            border-radius: 14px;
-            background: transparent;
-            color: #343b45;
-            padding: 8px 2px;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-        `;
-
-        button.querySelector("span").style.cssText = `
-            font-size: 43px;
-            line-height: 1.2;
-        `;
-
-        button.querySelector("small").style.cssText = `
-            font-size: 11px;
-            color: #77818e;
+            padding: 14px 8px;
+            border: 1px solid #d6ad55;
+            border-radius: 10px;
+            background: #39313f;
+            color: white;
+            font-size: 16px;
         `;
 
         button.addEventListener("click", () => {
-
             const pending = window.pendingPromotion;
 
             if (!pending) return;
 
-            const result = game.move({
+            game.move({
                 from: pending.from,
                 to: pending.to,
                 promotion: button.dataset.piece
             });
-
-            if (!result) return;
 
             window.pendingPromotion = null;
             popup.remove();
@@ -264,51 +147,32 @@ function showPromotionChoices() {
             clearLegalMoves();
             updateStatus();
         });
-
     });
-}
+        }
 
-
-// GAME STATUS
-
-function updateStatus() {
-
-    if (game.isCheckmate()) {
-
-        status.textContent =
-            "Checkmate! " +
-            (game.turn() === "w" ? "Black" : "White") +
-            " wins!";
-
-    } else if (game.isStalemate()) {
-
-        status.textContent = "Draw — stalemate!";
-
-    } else if (game.isDraw()) {
-
-        status.textContent = "Draw!";
-
-    } else if (game.isCheck()) {
-
-        status.textContent =
-            (game.turn() === "w" ? "White" : "Black") +
-            " is in check!";
-
-    } else {
-
-        status.textContent =
-            (game.turn() === "w" ? "White" : "Black") +
-            " to move";
+    function updateStatus() {
+        if (game.isCheckmate()) {
+            status.textContent =
+                "Checkmate! " +
+                (game.turn() === "w" ? "Black" : "White") +
+                " wins!";
+        } else if (game.isStalemate()) {
+            status.textContent = "Draw — stalemate!";
+        } else if (game.isDraw()) {
+            status.textContent = "Draw!";
+        } else if (game.isCheck()) {
+            status.textContent =
+                (game.turn() === "w" ? "White" : "Black") +
+                " is in check!";
+        } else {
+            status.textContent =
+                (game.turn() === "w" ? "White" : "Black") +
+                " to move";
+        }
+        updateCheckGlow();
     }
 
-    updateCheckGlow();
-}
-
-
-// START DRAGGING
-
-board.addEventListener("drag-start", (event) => {
-
+    board.addEventListener("drag-start", (event) => {
     const piece = event.detail.piece;
 
     if (
@@ -323,87 +187,99 @@ board.addEventListener("drag-start", (event) => {
     showLegalMoves(event.detail.source);
 });
 
-
-// DROP AND VALIDATE MOVES
-
 board.addEventListener("drop", (event) => {
-
     const { source, target, setAction } = event.detail;
 
     clearLegalMoves();
 
     try {
-
         const movingPiece = game.get(source);
 
-        if (!movingPiece || game.isGameOver()) {
-            setAction("snapback");
-            return;
-        }
+if (
+    movingPiece &&
+    movingPiece.type === "p" &&
+    (target[1] === "8" || target[1] === "1")
+) {
+    const legalPromotion = game.moves({
+        square: source,
+        verbose: true
+    }).some(move => move.to === target && move.promotion);
 
-        // PROMOTION DETECTION
+    setAction("snapback");
 
-        if (
-            movingPiece.type === "p" &&
-            (target[1] === "8" || target[1] === "1")
-        ) {
+    if (!legalPromotion) return;
 
-            const legalPromotion = game.moves({
-                square: source,
-                verbose: true
-            }).some(move =>
-                move.to === target && move.promotion
-            );
+    window.pendingPromotion = {
+        from: source,
+        to: target
+    };
 
-            setAction("snapback");
+    showPromotionChoices();
+    return;
+}
 
-            if (!legalPromotion) return;
+game.move({
+    from: source,
+    to: target
+});
 
-            window.pendingPromotion = {
-                from: source,
-                to: target
-            };
-
-            showPromotionChoices();
-            return;
-        }
-
-        // NORMAL CHESS MOVE
-
-        const result = game.move({
-            from: source,
-            to: target
-        });
-
-        if (!result) {
-            setAction("snapback");
-            return;
-        }
-
-        updateStatus();
-
+updateStatus();
+        
     } catch (error) {
-
         setAction("snapback");
     }
 });
 
-
-// RESTORE BOARD AFTER SNAPBACK
-
 board.addEventListener("snap-end", () => {
-
     board.setPosition(game.fen());
     clearLegalMoves();
-
 });
 
-
-// INITIAL STATUS
-
 updateStatus();
+    </script>
+    <style>
+        .board-container {
+            width: min(92vw, 500px);
+            margin: 25px auto;
+        }
 
-</script>
+        chess-board {
+            display: block;
+            width: 100%;
+        }
+
+        .board-screen {
+            text-align: center;
+            padding: 20px;
+        }
+        
+    </style>
+</head>
+
+<body>
+
+    <main class="board-screen">
+
+        <h1>PHANTOM CHESS</h1>
+
+        <p class="tagline">Every piece has a secret</p>
+
+        <p id="gameStatus">White to move</p>
+
+<div class="board-container">
+    <chess-board
+        id="chessboard"
+        position="start"
+        draggable-pieces>
+    </chess-board>
+</div>
+        </div>
+
+        <button onclick="window.location.href='bot.html'">
+            Back to Bot Setup
+        </button>
+
+    </main>
 
 </body>
 </html>
