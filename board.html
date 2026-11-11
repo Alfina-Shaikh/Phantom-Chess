@@ -119,15 +119,120 @@ function clearLegalMoves() {
     popup.appendChild(panel);
     document.body.appendChild(popup);
 
+function showPromotionChoices() {
+    const popup = document.createElement("div");
+
+    popup.style.cssText = `
+        position: fixed;
+        inset: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        pointer-events: none;
+    `;
+
+    const panel = document.createElement("div");
+
+    panel.style.cssText = `
+        position: relative;
+        background: #ffffff;
+        padding: 24px 18px;
+        border: 2px solid #d9dce2;
+        border-radius: 22px;
+        text-align: center;
+        color: #596574;
+        width: 88%;
+        max-width: 430px;
+        box-shadow: 0 5px 18px rgba(0,0,0,0.16);
+        pointer-events: auto;
+    `;
+
+    const pointer = document.createElement("div");
+
+    pointer.style.cssText = `
+        position: absolute;
+        top: -12px;
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        background: white;
+        border-left: 2px solid #d9dce2;
+        border-top: 2px solid #d9dce2;
+        transform: translateX(-50%) rotate(45deg);
+    `;
+
+    panel.innerHTML = `
+        <h2 style="
+            font-size: 21px;
+            letter-spacing: 2px;
+            margin: 4px 0 22px;
+            color: #84909d;
+        ">PAWN PROMOTION</h2>
+
+        <div style="
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+        ">
+            <button data-piece="q">
+                <span>♕</span>
+                <small>Queen</small>
+            </button>
+
+            <button data-piece="r">
+                <span>♖</span>
+                <small>Rook</small>
+            </button>
+
+            <button data-piece="b">
+                <span>♗</span>
+                <small>Bishop</small>
+            </button>
+
+            <button data-piece="n">
+                <span>♘</span>
+                <small>Knight</small>
+            </button>
+        </div>
+    `;
+
+    panel.prepend(pointer);
+
+    popup.appendChild(panel);
+    document.body.appendChild(popup);
+
     panel.querySelectorAll("button").forEach(button => {
         button.style.cssText = `
-            padding: 14px 8px;
-            border: 1px solid #d6ad55;
-            border-radius: 10px;
-            background: #39313f;
-            color: white;
-            font-size: 16px;
+            border: none;
+            border-radius: 14px;
+            background: transparent;
+            color: #343b45;
+            padding: 8px 2px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
         `;
+
+        button.querySelector("span").style.cssText = `
+            font-size: 43px;
+            line-height: 1.2;
+        `;
+
+        button.querySelector("small").style.cssText = `
+            font-size: 11px;
+            color: #77818e;
+        `;
+
+        button.addEventListener("mouseenter", () => {
+            button.style.background = "#edf3f5";
+        });
+
+        button.addEventListener("mouseleave", () => {
+            button.style.background = "transparent";
+        });
 
         button.addEventListener("click", () => {
             const pending = window.pendingPromotion;
@@ -148,7 +253,8 @@ function clearLegalMoves() {
             updateStatus();
         });
     });
-        }
+}
+            
 
     function updateStatus() {
         if (game.isCheckmate()) {
